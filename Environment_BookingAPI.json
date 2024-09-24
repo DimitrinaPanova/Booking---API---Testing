@@ -1,5 +1,5 @@
 {
-	"id": "04dfcc6a-82e4-430b-abd0-7412ac7252cb",
+	"id": "e4763860-8eea-49d2-bd80-ae22f87db064",
 	"name": "Environment Booking API",
 	"values": [
 		{
@@ -40,6 +40,6 @@
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2024-09-20T12:14:26.918Z",
-	"_postman_exported_using": "Postman/11.13.0"
+	"_postman_exported_at": "2024-09-24T12:11:30.329Z",
+	"_postman_exported_using": "Postman/11.13.1"
 }
