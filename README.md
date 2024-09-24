@@ -7,6 +7,8 @@ This project contains automated API tests for the **Booking API**, focusing on t
 
 This project aims to ensure that the **Booking API** functions as expected across various endpoints. It verifies that the API handles different scenarios, such as booking creation, retrieval, updates, and cancellations, with correct responses and behavior.
 
+https://restful-booker.herokuapp.com/apidoc/index.html
+
 ## Key Features of the API Tests:
 - **Validation of Key Endpoints:** Tests for critical endpoints like booking creation, retrieval, modification, and deletion.
 - **Environment Management:** Dynamic handling of API environment variables, such as base URL, API keys, and tokens.
