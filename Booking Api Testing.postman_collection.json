@@ -1,233 +1,43 @@
 {
 	"info": {
-		"_postman_id": "69d41eac-b8e4-42b5-b132-f28ebcd5d64a",
-		"name": "Booking Api Testing",
+		"_postman_id": "0324a4f4-2ef3-46e7-b301-30bb1f699ac3",
+		"name": "Booking API Testing",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" width=\"2162\" height=\"1530\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "28660068"
 	},
 	"item": [
 		{
-			"name": "Positive Test Cases",
+			"name": "Happy path",
 			"item": [
 				{
-					"name": "Get Booking Id's",
+					"name": "Authenticate and Retrieve Token",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"// Parse the response JSON",
-									"var json = pm.response.json();",
 									"",
-									"//Verify the status code 200",
-									"pm.test(\"Verify Status Code is 200\",function(){",
-									"    pm.response.to.have.status(200);",
-									"})",
+									"var jsonData = pm.response.json(); ",
 									"",
-									"// Ensure the response is an array",
-									"pm.test(\"Response is an array\", function () {",
-									"    pm.expect(json).to.be.an('array');",
-									"});",
-									"",
-									"// Check if the first element contains 'bookingid'",
-									"pm.test(\"First object contains bookingid\", function () {",
-									"    pm.expect(json[0]).to.have.property('bookingid');",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/booking",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"booking"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Booking",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// Parse the response JSON",
-									"var json = pm.response.json();",
-									"",
-									"pm.environment.set(\"booking_id\", json.bookingid);",
-									"var json = pm.response.json();",
-									"",
-									"// Check if the response status code is 200",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});",
 									"",
-									"// Check if bookingid exists and is a number",
-									"pm.test(\"bookingid is a number\", function () {",
-									"    pm.expect(json.bookingid).to.be.a('number');",
+									"pm.test(\"Token is present in response\", function () {",
+									"    pm.expect(jsonData).to.have.property(\"token\"); ",
 									"});",
 									"",
-									"// Check for the presence of all required fields in booking",
-									"pm.test(\"Booking contains required fields\", function () {",
-									"    pm.expect(json.booking).to.have.property('firstname');",
-									"    pm.expect(json.booking).to.have.property('lastname');",
-									"    pm.expect(json.booking).to.have.property('totalprice');",
-									"    pm.expect(json.booking).to.have.property('depositpaid');",
-									"    pm.expect(json.booking).to.have.property('bookingdates');",
-									"    pm.expect(json.booking).to.have.property('additionalneeds');",
+									"pm.test(\"Response time is acceptable\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(600);",
 									"});",
 									"",
-									"// Check that totalprice is a number",
-									"pm.test(\"totalprice is a number\", function () {",
-									"    pm.expect(json.booking.totalprice).to.be.a('number');",
-									"});",
-									"",
-									"// Check that depositpaid is a boolean",
-									"pm.test(\"depositpaid is a boolean\", function () {",
-									"    pm.expect(json.booking.depositpaid).to.be.a('boolean');",
-									"});",
-									"",
-									"// Check the format of checkin and checkout dates",
-									"pm.test(\"Checkin and checkout dates are valid\", function () {",
-									"    pm.expect(json.booking.bookingdates).to.have.property('checkin');",
-									"    pm.expect(json.booking.bookingdates).to.have.property('checkout');",
-									"",
-									"    // Simple date validation (YYYY-MM-DD format)",
-									"    var dateRegex = /^\\d{4}-\\d{2}-\\d{2}$/;",
-									"    pm.expect(json.booking.bookingdates.checkin).to.match(dateRegex);",
-									"    pm.expect(json.booking.bookingdates.checkout).to.match(dateRegex);",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"firstname\" : \"{{fname}}\",\n    \"lastname\" : \"{{lname}}\",\n    \"totalprice\" : 111,\n    \"depositpaid\" : true,\n    \"bookingdates\" : {\n        \"checkin\" : \"2018-01-01\",\n        \"checkout\" : \"2019-01-01\"\n    },\n    \"additionalneeds\" : \"Breakfast\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/booking",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"booking"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Booking Details",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// Fixed the TypeError: e.toLowerCase is not a function error\r",
-									"// Test Case 1: Validate Status Code\r",
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"// Test Case 2: Validate Response Body (JSON)\r",
-									"pm.test(\"Response body is JSON\", function () {\r",
-									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
-									"});\r",
-									"\r",
-									"// Test Case 3: Validate First Name and Last Name\r",
-									"pm.test(\"Validate first name and last name\", function () {\r",
-									"    const jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.firstname).to.be.a('string');\r",
-									"    pm.expect(jsonData.lastname).to.be.a('string');\r",
-									"});\r",
-									"\r",
-									"// Test Case 4: Validate Total Price\r",
-									"pm.test(\"Validate total price\", function () {\r",
-									"    const jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.totalprice).to.eql(111);\r",
-									"});\r",
-									"\r",
-									"// Test Case 5: Validate Deposit Paid Status\r",
-									"pm.test(\"Validate deposit paid status\", function () {\r",
-									"    const jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.depositpaid).to.be.true;\r",
-									"});\r",
-									"\r",
-									"// Test Case 6: Validate Booking Dates\r",
-									"pm.test(\"Validate booking dates\", function () {\r",
-									"    const jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.bookingdates.checkin).to.eql(\"2018-01-01\");\r",
-									"    pm.expect(jsonData.bookingdates.checkout).to.eql(\"2019-01-01\");\r",
-									"});\r",
-									"\r",
-									"// Test Case 7: Validate Additional Needs\r",
-									"pm.test(\"Validate additional needs\", function () {\r",
-									"    const jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.additionalneeds).to.eql(\"Breakfast\");\r",
-									"});\r",
-									"\r",
-									"// Test Case 8: Validate Response Headers\r",
-									"pm.test(\"Content-Type is application/json\", function () {\r",
-									"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
-									"});\r",
+									"if (jsonData.token) {",
+									"    pm.environment.set(\"auth_token\", jsonData.token);",
+									"} else {",
+									"    pm.environment.unset(\"auth_token\");",
+									"}",
 									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/booking/{{booking_id}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"booking",
-								"{{booking_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Token Generator",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var json = pm.response.json();",
-									"pm.environment.set(\"token_id\", json.token);",
-									"var json = pm.response.json();",
-									"",
-									"pm.test(\"Verify Status Code is 200\",function(){",
-									"    pm.response.to.have.status(200);",
-									"})"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -239,12 +49,13 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/json",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\" : \"admin\",\n    \"password\" : \"password123\"\n}",
+							"raw": "{\r\n    \"username\" : \"admin\",\r\n    \"password\" : \"password123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -252,80 +63,240 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/auth",
+							"raw": "{{base_url}}/auth",
 							"host": [
-								"{{host}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"auth"
 							]
 						},
-						"description": "Generated from cURL: curl -X POST \\\n  https://restful-booker.herokuapp.com/auth \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n    \"username\" : \"admin\",\n    \"password\" : \"password123\"\n}'"
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
 					},
 					"response": []
 				},
 				{
-					"name": "Update Booking",
+					"name": "Retrieve All Bookings",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"// Parse the response JSON",
-									"var json = pm.response.json();",
-									"",
-									"// Check if the response status code is 200",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});",
-									"",
-									"// Check for the presence of all required fields",
-									"pm.test(\"Response contains required fields\", function () {",
-									"    pm.expect(json).to.have.property('firstname');",
-									"    pm.expect(json).to.have.property('lastname');",
-									"    pm.expect(json).to.have.property('totalprice');",
-									"    pm.expect(json).to.have.property('depositpaid');",
-									"    pm.expect(json).to.have.property('bookingdates');",
-									"    pm.expect(json).to.have.property('additionalneeds');",
+									"pm.test(\"Response is a non-empty array with valid booking objects\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(Array.isArray(jsonData)).to.be.true;",
+									"    pm.expect(jsonData.length).to.be.above(0);",
+									"    jsonData.forEach(function (booking) {",
+									"        pm.expect(booking).to.have.property('bookingid');",
+									"        pm.expect(booking.bookingid).to.be.a('number');",
+									"       ",
+									"    });",
+									"});",
+									"pm.test(\"Response time is acceptable\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(700);",
 									"});",
 									"",
-									"// Ensure firstname and lastname are strings",
-									"pm.test(\"firstname and lastname are strings\", function () {",
-									"    pm.expect(json.firstname).to.be.a('string');",
-									"    pm.expect(json.lastname).to.be.a('string');",
-									"});",
 									"",
-									"// Check that firstname and lastname have expected values",
-									"pm.test(\"Firstname is 'James' and Lastname is 'Brown'\", function () {",
-									"    pm.expect(json.firstname).to.equal('James');",
-									"    pm.expect(json.lastname).to.equal('Brown');",
-									"});",
-									"",
-									"// Check that totalprice is a number",
-									"pm.test(\"totalprice is a number\", function () {",
-									"    pm.expect(json.totalprice).to.be.a('number');",
-									"});",
-									"",
-									"// Check that depositpaid is a boolean",
-									"pm.test(\"depositpaid is a boolean\", function () {",
-									"    pm.expect(json.depositpaid).to.be.a('boolean');",
-									"});",
-									"",
-									"// Check the format of checkin and checkout dates",
-									"pm.test(\"Checkin and checkout dates are valid\", function () {",
-									"    pm.expect(json.bookingdates).to.have.property('checkin');",
-									"    pm.expect(json.bookingdates).to.have.property('checkout');",
-									"",
-									"    // Simple date validation (YYYY-MM-DD format)",
-									"    var dateRegex = /^\\d{4}-\\d{2}-\\d{2}$/;",
-									"    pm.expect(json.bookingdates.checkin).to.match(dateRegex);",
-									"    pm.expect(json.bookingdates.checkout).to.match(dateRegex);",
-									"});",
-									"",
-									"// Check that additionalneeds is a string",
-									"pm.test(\"additionalneeds is a string\", function () {",
-									"    pm.expect(json.additionalneeds).to.be.a('string');",
-									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/booking",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create New Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test 1: Check that status code is 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Parse the JSON response correctly\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Response contains bookingid and booking object\", function () {\r",
+									"    pm.expect(jsonData).to.have.property('bookingid');\r",
+									"    pm.expect(jsonData).to.have.property('booking');\r",
+									"});\r",
+									"\r",
+									"// Save the bookingid to an environment variable\r",
+									"pm.environment.set(\"bookingId\", jsonData.bookingid);\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Test 4: Validate booking object fields\r",
+									"pm.test(\"Booking object contains correct fields\", function () {\r",
+									"    const booking = jsonData.booking;\r",
+									"    pm.expect(booking).to.include({\r",
+									"        'firstname': 'Dimitrina',\r",
+									"        'lastname': 'Panova',\r",
+									"        'totalprice': 111,\r",
+									"        'depositpaid': true,\r",
+									"        'additionalneeds': 'Breakfast'\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Test 5: Validate bookingdates object\r",
+									"pm.test(\"Booking dates object contains correct fields\", function () {\r",
+									"    const bookingDates = jsonData.booking.bookingdates;\r",
+									"    pm.expect(bookingDates).to.include({\r",
+									"        'checkin': '2018-01-01',\r",
+									"        'checkout': '2019-01-01'\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Test 6: Validate types of the fields\r",
+									"pm.test(\"Validate field types in booking object\", function () {\r",
+									"    const booking = jsonData.booking;\r",
+									"    pm.expect(typeof booking.firstname).to.equal('string');\r",
+									"    pm.expect(typeof booking.lastname).to.equal('string');\r",
+									"    pm.expect(typeof booking.totalprice).to.equal('number');\r",
+									"    pm.expect(typeof booking.depositpaid).to.equal('boolean');\r",
+									"    pm.expect(typeof booking.additionalneeds).to.equal('string');\r",
+									"\r",
+									"    const bookingDates = booking.bookingdates;\r",
+									"    pm.expect(typeof bookingDates).to.equal('object');\r",
+									"    pm.expect(typeof bookingDates.checkin).to.equal('string');\r",
+									"    pm.expect(typeof bookingDates.checkout).to.equal('string');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\" : \"Dimitrina\",\r\n    \"lastname\" : \"Panova\",\r\n    \"totalprice\" : 111,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2018-01-01\",\r\n        \"checkout\" : \"2019-01-01\"\r\n    },\r\n    \"additionalneeds\" : \"Breakfast\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/booking",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Booking by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// Parse the JSON response\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"// Test 1: Check if response contains expected fields\r",
+									"pm.test(\"Response contains correct fields\", function () {\r",
+									"    pm.expect(jsonData).to.have.property('firstname', 'Dimitrina');\r",
+									"    pm.expect(jsonData).to.have.property('lastname', 'Panova');\r",
+									"    pm.expect(jsonData).to.have.property('totalprice', 111);\r",
+									"    pm.expect(jsonData).to.have.property('depositpaid', true);\r",
+									"    pm.expect(jsonData).to.have.property('additionalneeds', 'Breakfast');\r",
+									"});\r",
+									"\r",
+									"// Test 2: Validate bookingdates object\r",
+									"pm.test(\"Booking dates object contains correct fields\", function () {\r",
+									"    pm.expect(jsonData.bookingdates).to.have.property('checkin', '2018-01-01');\r",
+									"    pm.expect(jsonData.bookingdates).to.have.property('checkout', '2019-01-01');\r",
+									"});\r",
+									"\r",
+									"// Test 3: Validate types of the fields\r",
+									"pm.test(\"Validate field types in response\", function () {\r",
+									"    pm.expect(jsonData.firstname).to.be.a('string');\r",
+									"    pm.expect(jsonData.lastname).to.be.a('string');\r",
+									"    pm.expect(jsonData.totalprice).to.be.a('number');\r",
+									"    pm.expect(jsonData.depositpaid).to.be.a('boolean');\r",
+									"    pm.expect(jsonData.additionalneeds).to.be.a('string');\r",
+									"    pm.expect(jsonData.bookingdates).to.be.an('object');\r",
+									"    pm.expect(jsonData.bookingdates.checkin).to.be.a('string');\r",
+									"    pm.expect(jsonData.bookingdates.checkout).to.be.a('string');\r",
+									"});\r",
 									""
 								],
 								"type": "text/javascript",
@@ -334,17 +305,122 @@
 						}
 					],
 					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/booking/{{bookingId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking",
+								"{{bookingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Existing Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the JSON response body\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"// Test 1: Check if status code is 200 (success)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test 2: Validate the 'firstname' field\r",
+									"pm.test(\"Firstname is correct\", function () {\r",
+									"    pm.expect(jsonData.firstname).to.eql(\"Di\");\r",
+									"});\r",
+									"\r",
+									"// Test 3: Validate the 'lastname' field\r",
+									"pm.test(\"Lastname is correct\", function () {\r",
+									"    pm.expect(jsonData.lastname).to.eql(\"Panova\");\r",
+									"});\r",
+									"\r",
+									"// Test 4: Validate the 'totalprice' field\r",
+									"pm.test(\"Total price is correct\", function () {\r",
+									"    pm.expect(jsonData.totalprice).to.eql(111);\r",
+									"});\r",
+									"\r",
+									"// Test 5: Validate the 'depositpaid' field\r",
+									"pm.test(\"Deposit paid is true\", function () {\r",
+									"    pm.expect(jsonData.depositpaid).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"// Test 6: Validate the 'bookingdates' object\r",
+									"pm.test(\"Checkin date is correct\", function () {\r",
+									"    pm.expect(jsonData.bookingdates.checkin).to.eql(\"2018-01-01\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Checkout date is correct\", function () {\r",
+									"    pm.expect(jsonData.bookingdates.checkout).to.eql(\"2019-01-01\");\r",
+									"});\r",
+									"\r",
+									"// Test 7: Validate the 'additionalneeds' field\r",
+									"pm.test(\"Additional needs is correct\", function () {\r",
+									"    pm.expect(jsonData.additionalneeds).to.eql(\"Breakfast\");\r",
+									"});\r",
+									"pm.test(\"Response time is acceptable\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(900);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [
 							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
 								"key": "Cookie",
-								"value": "token={{token_id}}",
+								"value": "token ={{auth_token}}",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"firstname\" : \"James\",\n    \"lastname\" : \"Brown\",\n    \"totalprice\" : 111,\n    \"depositpaid\" : true,\n    \"bookingdates\" : {\n        \"checkin\" : \"2018-01-01\",\n        \"checkout\" : \"2019-01-01\"\n    },\n    \"additionalneeds\" : \"Breakfast\"\n}",
+							"raw": "{\r\n    \"firstname\" : \"Di\",\r\n    \"lastname\" : \"Panova\",\r\n    \"totalprice\" : 111,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2018-01-01\",\r\n        \"checkout\" : \"2019-01-01\"\r\n    },\r\n    \"additionalneeds\" : \"Breakfast\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -352,13 +428,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/booking/{{booking_id}}",
+							"raw": "{{base_url}}/booking/{{bookingId}}",
 							"host": [
-								"{{host}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"booking",
-								"{{booking_id}}"
+								"{{bookingId}}"
 							]
 						}
 					},
@@ -371,60 +447,46 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"// Parse the response JSON\r",
-									"var json = pm.response.json();\r",
+									"// Parse the JSON response body\r",
+									"var jsonData = pm.response.json();\r",
 									"\r",
-									"// Check if the response status code is 200\r",
+									"// Test 1: Check if status code is 200 (success)\r",
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"// Check for the presence of all required fields\r",
-									"pm.test(\"Response contains required fields\", function () {\r",
-									"    pm.expect(json).to.have.property('firstname');\r",
-									"    pm.expect(json).to.have.property('lastname');\r",
-									"    pm.expect(json).to.have.property('totalprice');\r",
-									"    pm.expect(json).to.have.property('depositpaid');\r",
-									"    pm.expect(json).to.have.property('bookingdates');\r",
-									"    pm.expect(json).to.have.property('additionalneeds');\r",
+									"// Test 2: Validate the 'firstname' field\r",
+									"pm.test(\"Firstname is correct\", function () {\r",
+									"    pm.expect(jsonData.firstname).to.eql(\"Di\");\r",
 									"});\r",
 									"\r",
-									"// Ensure firstname and lastname are strings\r",
-									"pm.test(\"firstname and lastname are strings\", function () {\r",
-									"    pm.expect(json.firstname).to.be.a('string');\r",
-									"    pm.expect(json.lastname).to.be.a('string');\r",
+									"// Test 3: Validate the 'lastname' field\r",
+									"pm.test(\"Lastname is correct\", function () {\r",
+									"    pm.expect(jsonData.lastname).to.eql(\"Ivanova Panova\");\r",
 									"});\r",
 									"\r",
-									"// Check that firstname and lastname have expected values\r",
-									"pm.test(\"Firstname is 'James' and Lastname is 'Brown'\", function () {\r",
-									"    pm.expect(json.firstname).to.equal('James');\r",
-									"    pm.expect(json.lastname).to.equal('Brown');\r",
+									"// Test 4: Validate the 'totalprice' field\r",
+									"pm.test(\"Total price is correct\", function () {\r",
+									"    pm.expect(jsonData.totalprice).to.eql(111);\r",
 									"});\r",
 									"\r",
-									"// Check that totalprice is a number\r",
-									"pm.test(\"totalprice is a number\", function () {\r",
-									"    pm.expect(json.totalprice).to.be.a('number');\r",
+									"// Test 5: Validate the 'depositpaid' field\r",
+									"pm.test(\"Deposit paid is true\", function () {\r",
+									"    pm.expect(jsonData.depositpaid).to.eql(true);\r",
 									"});\r",
 									"\r",
-									"// Check that depositpaid is a boolean\r",
-									"pm.test(\"depositpaid is a boolean\", function () {\r",
-									"    pm.expect(json.depositpaid).to.be.a('boolean');\r",
+									"// Test 6: Validate the 'bookingdates' object\r",
+									"pm.test(\"Checkin date is correct\", function () {\r",
+									"    pm.expect(jsonData.bookingdates.checkin).to.eql(\"2018-01-01\");\r",
 									"});\r",
 									"\r",
-									"// Check the format of checkin and checkout dates\r",
-									"pm.test(\"Checkin and checkout dates are valid\", function () {\r",
-									"    pm.expect(json.bookingdates).to.have.property('checkin');\r",
-									"    pm.expect(json.bookingdates).to.have.property('checkout');\r",
-									"\r",
-									"    // Simple date validation (YYYY-MM-DD format)\r",
-									"    var dateRegex = /^\\d{4}-\\d{2}-\\d{2}$/;\r",
-									"    pm.expect(json.bookingdates.checkin).to.match(dateRegex);\r",
-									"    pm.expect(json.bookingdates.checkout).to.match(dateRegex);\r",
+									"pm.test(\"Checkout date is correct\", function () {\r",
+									"    pm.expect(jsonData.bookingdates.checkout).to.eql(\"2019-01-01\");\r",
 									"});\r",
 									"\r",
-									"// Check that additionalneeds is a string\r",
-									"pm.test(\"additionalneeds is a string\", function () {\r",
-									"    pm.expect(json.additionalneeds).to.be.a('string');\r",
+									"// Test 7: Validate the 'additionalneeds' field\r",
+									"pm.test(\"Additional needs is correct\", function () {\r",
+									"    pm.expect(jsonData.additionalneeds).to.eql(\"Breakfast\");\r",
 									"});\r",
 									""
 								],
@@ -434,24 +496,42 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/json",
+								"type": "text"
 							},
 							{
 								"key": "Accept",
-								"value": "application/json"
+								"value": "application/json",
+								"type": "text"
 							},
 							{
 								"key": "Cookie",
-								"value": "token={{token_id}}"
+								"value": "token={{token}}",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"firstname\" : \"James\",\n    \"lastname\" : \"Brown\"\n}",
+							"raw": "{\r\n    \"firstname\" : \"Di\",\r\n    \"lastname\" : \"Ivanova Panova\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -459,34 +539,40 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/booking/{{booking_id}}",
+							"raw": "{{base_url}}/booking/{{bookingId}}",
 							"host": [
-								"{{host}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"booking",
-								"{{booking_id}}"
+								"{{bookingId}}"
 							]
-						},
-						"description": "Generated from cURL: curl -X PATCH \\\n  https://restful-booker.herokuapp.com/booking/1 \\\n  -H 'Content-Type: application/json' \\\n  -H 'Accept: application/json' \\\n  -H 'Cookie: token=abc123' \\\n  -d '{\n    \"firstname\" : \"James\",\n    \"lastname\" : \"Brown\"\n}'"
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "Delete Booking",
+					"name": "Delete Existing Booking",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Verify Status Code is 201\",function(){",
-									"    pm.response.to.have.status(201);",
-									"})",
-									"",
-									"// Check if the word \"Created\" is present in the response body",
-									"pm.test('Response contains the word \"Created\"', function () {",
-									"    pm.expect(pm.response.text()).to.include('Created');",
-									"});",
+									"pm.test(\"Verify Status Code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test('Response confirms deletion', function () {\r",
+									"    pm.expect(pm.response.text()).to.include('Created');\r",
+									"});\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url: `${pm.environment.get(\"base_url\")}/booking/${pm.environment.get(\"bookingId\")}`,\r",
+									"    method: 'GET',\r",
+									"}, function (err, res) {\r",
+									"    pm.test(\"Booking should not exist\", function () {\r",
+									"        pm.expect(res).to.have.status(404);\r",
+									"    });\r",
+									"});\r",
 									""
 								],
 								"type": "text/javascript",
@@ -495,28 +581,44 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/json",
+								"type": "text"
 							},
 							{
 								"key": "Cookie",
-								"value": "token={{token_id}}"
+								"value": "token = {{token}}",
+								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "{{host}}/booking/{{booking_id}}",
+							"raw": "{{base_url}}/booking/{{bookingId}}",
 							"host": [
-								"{{host}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"booking",
-								"{{booking_id}}"
+								"{{bookingId}}"
 							]
-						},
-						"description": "Generated from cURL: curl -X DELETE \\\n  https://restful-booker.herokuapp.com/booking/1 \\\n  -H 'Content-Type: application/json' \\\n  -H 'Cookie: token=abc123'"
+						}
 					},
 					"response": []
 				}
@@ -526,20 +628,23 @@
 			"name": "Negative Test Cases",
 			"item": [
 				{
-					"name": "Get Booking Details Invalid Id",
+					"name": "Retrieve Booking with Invalid ID",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"",
-									"pm.test(\"Verify Status Code is 404\",function(){",
-									"    pm.response.to.have.status(404);",
-									"})",
-									"",
-									"// Check if the word \"Not Found\" is present in the response body",
-									"pm.test('Response contains the word \"Not Found\"', function () {",
-									"    pm.expect(pm.response.text()).to.include('Not Found');",
+									"\r",
+									"pm.test(\"Verify Status Code is 404\",function(){\r",
+									"    pm.response.to.have.status(404);\r",
+									"})\r",
+									"\r",
+									"// Check if the word \"Not Found\" is present in the response body\r",
+									"pm.test('Response contains the word \"Not Found\"', function () {\r",
+									"    pm.expect(pm.response.text()).to.include('Not Found');\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -551,20 +656,290 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/booking/823434",
+							"raw": "{{base_url}}/booking/invalid",
 							"host": [
-								"{{host}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"booking",
-								"823434"
+								"invalid"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Create Booking Copy",
+					"name": "Create Booking with Invalid Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify Status Code is 400\",function(){\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"pm.test(\"Response time is less than 900ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(900);\r",
+									"});\r",
+									"\r",
+									"// Check if the word \"Not Found\" is present in the response body\r",
+									"pm.test('Response contains the word \"Bad Request\"', function () {\r",
+									"    pm.expect(pm.response.text()).to.include('Bad Request');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\" : Jim,\r\n    \"lastname\" : \"Brown\",\r\n    \"totalprice\" : 111,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2018-01-01\",\r\n        \"checkout\" : \"2019-01-01\"\r\n    },\r\n    \"additionalneeds\" : \"Breakfast\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/booking",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Booking Without Authentication",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Verify Status Code is 403\",function(){\r",
+									"    pm.response.to.have.status(403);\r",
+									"})\r",
+									"\r",
+									"// Check if the word \"Forbidden\" is present in the response body\r",
+									"pm.test('Response contains the word \"Forbidden\"', function () {\r",
+									"    pm.expect(pm.response.text()).to.include('Forbidden');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/booking/{{bookingId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking",
+								"{{bookingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Booking Without Authentication",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Verify Status Code is 403\",function(){\r",
+									"    pm.response.to.have.status(403);\r",
+									"})\r",
+									"\r",
+									"// Check if the word \"Forbidden\" is present in the response body\r",
+									"pm.test('Response contains the word \"Forbidden\"', function () {\r",
+									"    pm.expect(pm.response.text()).to.include('Forbidden');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\" : \"Di\",\r\n    \"lastname\" : \"Panova\",\r\n    \"totalprice\" : 111,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2018-01-01\",\r\n        \"checkout\" : \"2019-01-01\"\r\n    },\r\n    \"additionalneeds\" : \"Breakfast\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/booking/{{bookingId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking",
+								"{{bookingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Partially Update Booking Without Authentication",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Verify Status Code is 403\",function(){\r",
+									"    pm.response.to.have.status(403);\r",
+									"})\r",
+									"\r",
+									"// Check if the word \"Forbidden\" is present in the response body\r",
+									"pm.test('Response contains the word \"Forbidden\"', function () {\r",
+									"    pm.expect(pm.response.text()).to.include('Forbidden');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\" : \"Di\",\r\n    \"lastname\" : \"Ivanova Panova\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/booking/{{bookingId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking",
+								"{{bookingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Booking Without Request Body",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Verify Status Code is 500\",function(){\r",
+									"    pm.response.to.have.status(500);\r",
+									"})\r",
+									"\r",
+									"// Check if the word \"Forbidden\" is present in the response body\r",
+									"pm.test('Response contains the word \"Internal Server Error\"', function () {\r",
+									"    pm.expect(pm.response.text()).to.include('Internal Server Error');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/booking",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Booking With Incorrect Data Format",
 					"event": [
 						{
 							"listen": "test",
@@ -589,7 +964,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"firstname\" : \"Jim\",\n    \"lastname\" : \"Brown\",\n    \"totalprice\" : #$%^%,\n    \"depositpaid\" : true,\n    \"bookingdates\" : {\n        \"checkin\" : \"2018-01-01\",\n        \"checkout\" : \"2019-01-01\"\n    },\n    \"additionalneeds\" : \"Breakfast\"\n}",
+							"raw": "{\r\n    firstname\" : \"Jim\",\r\n    \"lastname\" : \"Brown\",\r\n    \"totalprice\" : 111,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2018-01-01\",\r\n        \"checkout\" : \"2019-01-01\"\r\n    },\r\n    \"additionalneeds\" : \"Breakfast\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -597,9 +972,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/booking",
+							"raw": "{{base_url}}/booking",
 							"host": [
-								"{{host}}"
+								"{{base_url}}"
 							],
 							"path": [
 								"booking"
@@ -607,8 +982,126 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Authenticate With Invalid Username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify Status Code is 200\",function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"pm.test(\"Verify response body contains 'Bad credentials'\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.reason).to.eql(\"Bad credentials\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\" : \"username\",\r\n    \"password\" : \"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authenticate With Invalid Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify Status Code is 200\",function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"pm.test(\"Verify response body contains 'Bad credentials'\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.reason).to.eql(\"Bad credentials\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\" : \"admin\",\r\n    \"password\" : \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
 		}
 	]
 }
