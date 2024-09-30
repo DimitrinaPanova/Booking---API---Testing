@@ -60,7 +60,8 @@ npm install -g newman-reporter-htmlextra
    **Basic Execution:**
    Run the tests with the following command:
    ```bash
-   newman run Booking_ApiTesting.json -e Environment_BookingAPI.json
+   newman run "Booking API Testing.postman_collection.json" -e "Environment_Booking API.postman_environment.json"
+
    ```
    
 ![bookingApiTestNewman](https://github.com/user-attachments/assets/e08251f2-fa92-49c9-872e-1a0c49261b64)
