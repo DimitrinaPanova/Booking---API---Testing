@@ -63,25 +63,28 @@ npm install -g newman-reporter-htmlextra
    newman run "Booking API Testing.postman_collection.json" -e "Environment_Booking API.postman_environment.json"
 
    ```
-   
-![bookingApiTestNewman](https://github.com/user-attachments/assets/e08251f2-fa92-49c9-872e-1a0c49261b64)
+
+![Newman API Bookings](https://github.com/user-attachments/assets/6e39ac9d-11e5-4ab8-90c3-954426d3525f)
 
 
 3. **Execution with HTML Extra Report:**
    To generate an HTML report after the tests:
    ```bash
-   newman run Booking_ApiTesting.json -e Environment_BookingAPI.json -r htmlextra --reporter-htmlextra-export newman-run-report.html
+   newman run "Booking API Testing.postman_collection.json" -e "Environment_Booking API.postman_environment.json" -r htmlextra --reporter-htmlextra-export newman-run-report.html
    ```
    This command will create a detailed HTML report (newman-run-report.html) that you can open in any browser.
 
 
-     ![NewmanRunDashboard](https://github.com/user-attachments/assets/ad090d5e-24ba-4cda-9d98-88587e7f63c9)
-                              
+     ![Newman HTML](https://github.com/user-attachments/assets/020de8c3-6a3f-44be-b6f3-034be1039d23)
+
+   
+                         
+![Newman Total Request](https://github.com/user-attachments/assets/291b460c-5235-45a1-b082-32294efc5237)
 
 
 
 
-4. **Automated Testing with Continuous Integration (CI/CD):**
+5. **Automated Testing with Continuous Integration (CI/CD):**
    You can integrate the API testing suite into your CI/CD pipeline (e.g., Jenkins, GitLab CI) by configuring a job to run the Newman command. This ensures that the tests are executed on every code push or pull request, maintaining the stability of the API.
 
 ## Test Descriptions
